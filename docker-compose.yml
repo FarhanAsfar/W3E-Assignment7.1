@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres
+    container_name: flask_assignment
+    restart: unless-stopped
+
+    ports:
+      - "5432:5432"
+    
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: flask-db 
+    
+    volumes:
+      - flask_data:/var/lib/postgresql
+
+volumes:
+  flask_data:
