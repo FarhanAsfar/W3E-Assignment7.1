@@ -7,6 +7,6 @@ def create_app():
     app.config.from_object(Config) #loads all config values
 
     db.init_app(app) #attaches sqlalchemy to flask
-    migrate.init_app(app, db)
+    migrate.init_app(app, db) #connects Flask-Migrate to Flask app & SQLAlchemy models
 
     return app
