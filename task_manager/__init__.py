@@ -9,4 +9,7 @@ def create_app():
     db.init_app(app) #attaches sqlalchemy to flask
     migrate.init_app(app, db) #connects Flask-Migrate to Flask app & SQLAlchemy models
 
+    from task_manager.routes.tasks_routes import task_bp
+    app.register_blueprint(task_bp)
+
     return app
