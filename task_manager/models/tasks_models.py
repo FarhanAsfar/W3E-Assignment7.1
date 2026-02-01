@@ -1,5 +1,7 @@
 from task_manager.extensions import db
 from sqlalchemy.sql import func
+
+
 class Task(db.Model):
     __tablename__ = "tasks"
 
