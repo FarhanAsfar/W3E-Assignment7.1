@@ -6,7 +6,6 @@ def create_app():
     app = Flask(__name__) # creates flask app object
     app.config.from_object(Config) #loads all config values
 
-    print("DB: ", app.config.get("SQLALCHEMY_DATABASE_URI"))
     db.init_app(app) #attaches sqlalchemy to flask
     migrate.init_app(app, db)
 
