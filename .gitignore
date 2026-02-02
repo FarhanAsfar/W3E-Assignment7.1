@@ -3,3 +3,4 @@
 __pycache__
 doc.txt
 .env
+/logs
