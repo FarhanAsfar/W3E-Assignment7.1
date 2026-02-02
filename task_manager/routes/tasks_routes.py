@@ -20,7 +20,15 @@ def create_task_route():
 @task_bp.route("", methods=["GET"])
 def get_tasks_route():
     try:
-        tasks = get_tasks()
+        status = request.args.get("status")
+        q = request.args.get("q")
+        sort = request.args.get("sort")
+        
+        tasks = get_tasks(
+            status=status,
+            q=q,
+            sort=sort
+        )
 
         return jsonify([task.to_dict() for task in tasks]), 200
     
