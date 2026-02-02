@@ -9,13 +9,7 @@ def create_task_route():
     try:
         task = create_task(request.get_json())
 
-        return jsonify({
-            "id": task.id,
-            "title": task.title,
-            "status": task.status.value,
-            "due_date": task.due_date,
-            "created_at": task.created_at
-        }), 201
+        return jsonify(task.to_dict()), 201
 
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
