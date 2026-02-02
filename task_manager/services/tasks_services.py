@@ -1,22 +1,30 @@
+import logging
 from task_manager.extensions import db
 from task_manager.models.tasks_models import Task, TaskStatus 
 from datetime import date 
 from flask import jsonify
 
+
+logger = logging.getLogger("task_manager")
+
 # create task from given user request
 def create_task(data):
+    logger.info("Creating new task")
+    
     title = data.get("title")
     description = data.get("description")
     due_date = data.get("due_date")
     status = data.get("status", TaskStatus.TODO.value)
 
     if not title:
+        logger.warning("Task creating failed: title missing")
         raise ValueError("Title is required")
     
     # validate status
     try:
         status_enum = TaskStatus(status)
     except ValueError:
+        logger.warning(f"Invalid task status: {status}")
         raise ValueError(
             f"Invalid status. Allowed values: {[s.value for s in TaskStatus]}"
         )
@@ -27,9 +35,11 @@ def create_task(data):
         try:
             parsed_due_date = date.fromisoformat(due_date)
         except ValueError:
+            logger.warning("Invalid date format.")
             raise ValueError("invalid date format. Use YYYY-MM-DD")
         
         if parsed_due_date < date.today():
+            logger.warning(f"Invalid due date (past): {due_date}")
             raise ValueError("Due date can't be in the past")
 
     task = Task(
@@ -41,6 +51,8 @@ def create_task(data):
 
     db.session.add(task)
     db.session.commit()
+
+    logger.info(f"Task created successfully (id={task.id})")
 
     return task
 
