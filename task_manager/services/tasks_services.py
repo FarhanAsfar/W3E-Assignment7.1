@@ -84,7 +84,7 @@ def edit_task(task_id, data):
     return task
 
 # delete task logic
-def delete(task_id):
+def delete_task(task_id):
     task = Task.query.get(task_id)
 
     if not task:
