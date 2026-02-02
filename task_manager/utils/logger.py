@@ -1,4 +1,5 @@
-import logging from logging.handlers import RotatingFileHandler
+import logging 
+from logging.handlers import RotatingFileHandler
 import os
 
 def setup_logger():
