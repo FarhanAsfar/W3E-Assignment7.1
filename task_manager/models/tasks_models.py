@@ -4,7 +4,7 @@ import enum
 
 class TaskStatus(enum.Enum):
     TODO = "todo"
-    IN_PROGRESS = "in_progress"
+    IN_PROGRESS = "in progress"
     DONE = "done"
     
 class Task(db.Model):

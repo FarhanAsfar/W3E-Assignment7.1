@@ -1,8 +1,8 @@
-"""Create tasks table
+"""initial migration
 
-Revision ID: 6d2e96b647ed
+Revision ID: c3151555cf01
 Revises: 
-Create Date: 2026-02-02 02:48:18.737147
+Create Date: 2026-02-02 12:11:53.885815
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '6d2e96b647ed'
+revision = 'c3151555cf01'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,7 +22,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(), nullable=False),
     sa.Column('description', sa.Text(), nullable=True),
-    sa.Column('status', sa.Boolean(), nullable=True),
+    sa.Column('task_status', sa.Enum('TODO', 'IN_PROGRESS', 'DONE', name='taskstatus'), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('due_date', sa.Date(), nullable=True),
     sa.PrimaryKeyConstraint('id')
