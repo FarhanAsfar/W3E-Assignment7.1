@@ -76,9 +76,12 @@ def get_task_by_id(task_id):
 
 # edit task logic
 def edit_task(task_id, data):
+    logger.info(f"Updating task id={task_id}")
+    
     task = Task.query.get(task_id)
 
     if not task:
+        logger.warning(f"Task not found for update id={task_id}")
         raise ValueError("Task not found")
     
     title = data.get("title")
@@ -87,23 +90,45 @@ def edit_task(task_id, data):
     due_date = data.get("due_date")
 
     if title is not None:
-        task.title = title 
+        try:
+            task.title = title
+        except ValueError:
+            logger.warning("Could not update title")
+            raise ValueError("Task update failed. Could not update title") 
     
     if description is not None:
-        task.description = description 
+        try:
+            task.description = description 
+        except ValueError:
+            logger.warning("Could not update description")
+            raise ValueError("Task update failed. Could not update description")
     
     if status is not None:
         try:
             task.status = TaskStatus(status)
         except ValueError:
+            logger.warning(f"Invalid status update: {data['status']}")
             raise ValueError(
                 f"Invalid status. Allowed values: {[s.value for s in TaskStatus]}"
             ) 
     
     if due_date is not None:
+        parsed_due_date = None
+        if due_date:
+            try:
+                parsed_due_date = date.fromisoformat(due_date)
+            except ValueError:
+                logger.warning("Invalid date format.")
+                raise ValueError("invalid date format. Use YYYY-MM-DD")
+        
+            if parsed_due_date < date.today():
+                logger.warning(f"Invalid due date (past): {due_date}")
+                raise ValueError("Due date can't be in the past")
+        
         task.due_date = due_date
 
     db.session.commit()
+    logger.info(f"Task updated successfully id={task.id}")
     return task
 
 # delete task logic
