@@ -82,3 +82,15 @@ def edit_task(task_id, data):
 
     db.session.commit()
     return task
+
+# delete task logic
+def delete(task_id):
+    task = Task.query.get(task_id)
+
+    if not task:
+        raise ValueError("Task not found")
+    
+    db.session.delete(task)
+    db.session.commit()
+
+    return True 
