@@ -3,6 +3,7 @@ from task_manager.extensions import db
 from task_manager.models.tasks_models import Task, TaskStatus 
 from datetime import date 
 from flask import jsonify
+from sqlalchemy import or_
 
 
 logger = logging.getLogger("task_manager")
@@ -58,11 +59,45 @@ def create_task(data):
 
 
 # get all task logic
-def get_tasks():
-    try:
-        return Task.query.order_by(Task.created_at.desc()).all()
-    except Exception as e:
-        raise ValueError("Unable to fetch tasks")
+def get_tasks(status=None, q=None, sort=None):
+    logger.info("Fetching tasks with filters")
+
+    query = Task.query
+
+    # filter by status
+    if status:
+        try:
+            status_enum = TaskStatus(status)
+            query = query.filter(Task.status == status_enum)
+        except ValueError:
+            logger.warning(f"Invalid status filter: {status}")
+            raise ValueError(
+                f"Invalid status. Allowed values: {[s.value for s in TaskStatus]}"
+            )
+    
+    # filter by title or description
+    if q:
+        search_term = f"%{q}%"
+        query = query.filter(
+            or_(
+                Task.title.ilike(search_term),
+                Task.description.ilike(search_term)
+            )
+        )
+    
+    # filter by sorting
+    if sort:
+        if sort == "due_date":
+            query = query.order_by(Task.due_date.asc())
+        elif sort == "created_at":
+            query = query.order_by(Task.created_at.desc())
+        else:
+            logger.warning(f"Invalid sort parameter: {sort}")
+            raise ValueError("Invalid sort field. Use 'due_date' or 'created_at'")
+    else:
+        query = query.order_by(Task.created_at.desc())
+
+    return query.all()
     
 
 # get task by id logic
