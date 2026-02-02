@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 
 {% block content %}
 <h1>Tasks</h1>
@@ -36,7 +36,7 @@
             {% if task.status != "done" %}
                 <a href="/tasks/{{ task.id }}/mark-done">Mark Done</a>
             {% else %}
-                —
+               
             {% endif %}
         </td>
     </tr>
