@@ -6,8 +6,8 @@
 <h1>Tasks</h1>
 
 <form method="get">
-    <label for="status">Filter by status:</label>
-    <select name="status" onchange="this.form.submit()">
+    <label>Status:</label>
+    <select name="status">
         <option value="">All</option>
         {% for s in statuses %}
             <option value="{{ s }}" {% if s == selected_status %}selected{% endif %}>
@@ -15,7 +15,21 @@
             </option>
         {% endfor %}
     </select>
+
+    <label>Sort by:</label>
+    <select name="sort">
+        <option value="">Newest</option>
+        <option value="due_date" {% if selected_sort == "due_date" %}selected{% endif %}>
+            Due Date
+        </option>
+        <option value="created_at" {% if selected_sort == "created_at" %}selected{% endif %}>
+            Created Date
+        </option>
+    </select>
+
+    <button type="submit">Apply</button>
 </form>
+
 
 <br>
 

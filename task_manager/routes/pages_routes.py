@@ -14,14 +14,16 @@ def home_page():
 @pages_bp.route("/tasks")
 def tasks_page():
     status = request.args.get("status")
+    sort = request.args.get("sort")
 
-    tasks = get_tasks(status=status)
+    tasks = get_tasks(status=status, sort=sort)
 
     return render_template(
         "tasks.html",
         tasks=[task.to_dict() for task in tasks],
         statuses=[s.value for s in TaskStatus],
-        selected_status=status
+        selected_status=status,
+        selected_sort=sort
     )
 
 
