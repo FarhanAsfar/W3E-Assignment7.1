@@ -1,9 +1,14 @@
 {% extends "index.html" %}
 
 {% block content %}
-<h1>Task Manager</h1>
-
-<p>A simple task manager built with Flask.</p>
-
-<a href="/tasks">View Tasks</a>
+<div class="hero-container">
+    <div class="task-card">
+        <h1>Task Manager</h1>
+        <p>Stay organized and boost your productivity with our streamlined task management system.</p>
+        
+        <div class="action-buttons">
+            <a href="/tasks" class="btn-primary">View My Tasks</a>
+        </div>
+    </div>
+</div>
 {% endblock %}
