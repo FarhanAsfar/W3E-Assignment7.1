@@ -133,12 +133,16 @@ def edit_task(task_id, data):
 
 # delete task logic
 def delete_task(task_id):
+    logger.info(f"Deleting task id={task_id}")
+
     task = Task.query.get(task_id)
 
     if not task:
+        logger.warning(f"Task not found to delte id={task_id}")
         raise ValueError("Task not found")
     
     db.session.delete(task)
     db.session.commit()
-
+    logger.info(f"Task deleted successfully id={task_id}")
+    
     return True 
