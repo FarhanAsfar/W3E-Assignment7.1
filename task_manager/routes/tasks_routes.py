@@ -12,7 +12,7 @@ def create_task_route():
         return jsonify({
             "id": task.id,
             "title": task.title,
-            "status": task.status,
+            "status": task.status.value,
             "due_date": task.due_date,
             "created_at": task.created_at
         }), 201
