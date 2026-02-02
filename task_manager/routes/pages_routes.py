@@ -22,7 +22,7 @@ def tasks_page():
         "tasks.html",
         tasks=[task.to_dict() for task in tasks],
         statuses=[s.value for s in TaskStatus],
-        selected_status=status
+        selected_status=status,
         selected_sort=sort
     )
 
