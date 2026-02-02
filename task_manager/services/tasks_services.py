@@ -20,6 +20,17 @@ def create_task(data):
         raise ValueError(
             f"Invalid status. Allowed values: {[s.value for s in TaskStatus]}"
         )
+    
+    # validate due date
+    parsed_due_date = None
+    if due_date:
+        try:
+            parsed_due_date = date.fromisoformat(due_date)
+        except ValueError:
+            raise ValueError("invalid date format. Use YYYY-MM-DD")
+        
+        if parsed_due_date < date.today():
+            raise ValueError("Due date can't be in the past")
 
     task = Task(
         title=title,
