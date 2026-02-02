@@ -1,0 +1,48 @@
+{% extends "index.html" %}
+
+{% block content %}
+<h1>Tasks</h1>
+
+<form method="get">
+    <label for="status">Filter by status:</label>
+    <select name="status" onchange="this.form.submit()">
+        <option value="">All</option>
+        {% for s in statuses %}
+            <option value="{{ s }}" {% if s == selected_status %}selected{% endif %}>
+                {{ s }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
+
+<br>
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Due Date</th>
+        <th>Action</th>
+    </tr>
+
+    {% for task in tasks %}
+    <tr>
+        <td>{{ task.title }}</td>
+        <td class="{% if task.status == 'done' %}done{% endif %}">
+            {{ task.status }}
+        </td>
+        <td>{{ task.due_date or "-" }}</td>
+        <td>
+            {% if task.status != "done" %}
+                <a href="/tasks/{{ task.id }}/toggle-status">Mark Done</a>
+            {% else %}
+               <a href="/tasks/{{ task.id }}/toggle-status">Mark Undone</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="/">Back to Home</a>
+{% endblock %}

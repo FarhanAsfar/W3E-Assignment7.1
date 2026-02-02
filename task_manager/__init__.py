@@ -16,4 +16,7 @@ def create_app():
     from task_manager.routes.tasks_routes import task_bp
     app.register_blueprint(task_bp)
 
+    from task_manager.routes.pages_routes import pages_bp
+    app.register_blueprint(pages_bp)
+
     return app
