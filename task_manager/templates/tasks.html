@@ -34,9 +34,9 @@
         <td>{{ task.due_date or "-" }}</td>
         <td>
             {% if task.status != "done" %}
-                <a href="/tasks/{{ task.id }}/mark-done">Mark Done</a>
+                <a href="/tasks/{{ task.id }}/toggle-status">Mark Done</a>
             {% else %}
-               
+               <a href="/tasks/{{ task.id }}/toggle-status">Mark Undone</a>
             {% endif %}
         </td>
     </tr>
