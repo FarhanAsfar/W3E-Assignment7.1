@@ -51,3 +51,34 @@ def get_task_by_id(task_id):
 
     return task 
 
+# edit task logic
+def edit_task(task_id, data):
+    task = Task.query.get(task_id)
+
+    if not task:
+        raise ValueError("Task not found")
+    
+    title = data.get("title")
+    description = data.get("description")
+    status = data.get("status")
+    due_date = data.get("due_date")
+
+    if title is not None:
+        task.title = title 
+    
+    if description is not None:
+        task.description = description 
+    
+    if status is not None:
+        try:
+            task.status = TaskStatus(status)
+        except ValueError:
+            raise ValueError(
+                f"Invalid status. Allowed values: {[s.value for s in TaskStatus]}"
+            ) 
+    
+    if due_date is not None:
+        task.due_date = due_date
+
+    db.session.commit()
+    return task
